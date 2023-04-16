@@ -7,6 +7,13 @@ TODO
     x Setup trap house and set up on corners. (not able to build trap houses yet)
     x Have cop wander. (should they follow satiated fiends?)
     x Have fiends migrate to buy drugs. Each space away is a lower chance they'll migrate. Satiated fiends wander aimlessly.
+    x instead of wandering completely randomly, police go to highest addict space or random if all equal
+    if next to a dealer with product, they will arrest them
+    move traphouse to center
+    dealer can be upgraded
+    buy more dealers
+    upgrade runner
+    buy more runners
 
 
 
@@ -14,7 +21,6 @@ TODO
 QUESTIONS
 
 DESIGN
-    Money means the higher hte amount of money that drugs can be sold for.
-    Conflict means minor personell and product loss.
-    Heat means major personell and product loss.
+    
+    Nothing to really mitigate the cop other tahn moving it
 

@@ -4,6 +4,23 @@ class Game{
 		this.config.gameLoopInterval =  setInterval(this.looping, 1000);
 	}
 	
+	whoIsHere(x, y){
+		let n = 0; 
+		let addicted = 0;
+		for (let i in this.config.addicts){
+			let addict = this.config.addicts[i];
+			if (addict.x != x && addict.y != y){
+				continue;
+			}
+			n ++;
+			if (addict.addiction == 0){
+				addicted ++;
+			}
+		}
+
+		return addicted / n;
+	}
+
 	buyDrugs(addictID){
 		let dealerID 
 			= this.fetchDealer(this.config.addicts[addictID].x, 
@@ -21,27 +38,36 @@ class Game{
 		this.config.addicts[addictID].addiction = this.config.addictionTimer;
 		this.config.money += this.config.sale;
 		this.config.dealers[dealerID].stock--;
-		if (this.config.dealers[dealerID].stock < 1){
-			console.log(dealerID);
+		if (this.config.dealers[dealerID].stock < 1){			
 			this.sendRunner(dealerID);
 		}
 	}
 
 	copWander(){
 		let delta = [-1, 0, 1];
-		while (1){
-			let randX = this.config.cop.x + delta[randNum(0, 2)];
-			let randY = this.config.cop.y + delta[randNum(0, 2)];
-			if (randX == this.config.cop.x && randY == this.config.cop.y){
-				continue;
-			}
-			if (randX >= 0 && randX < this.config.maxX 
-				&& randY >= 0 && randY < this.config.maxY){
-				this.config.cop.x = randX;
-				this.config.cop.y = randY;
-				return;
+		let minX = this.config.cop.x - 1, maxX = this.config.cop.x + 1;
+		let minY = this.config.cop.y - 1, maxY = this.config.cop.y + 1;
+		let option = {space: [], high: 0};
+		for (let y = minY; y <= maxY; y++){
+			for (let x = minX; x <= maxX; x++){
+				if (x < 0 || x >= this.config.maxX ||  
+					y < 0 || y >= this.config.maxY
+					|| (x  == this.config.cop.x && y == this.config.cop.y) 
+					|| this.config.board[x][y] < option.high){
+					continue;
+				}				
+				if (this.config.board[x][y] > option.high){
+					option.high = this.config.board[x][y];
+					option.space = [];					
+				} 			
+				option.space.push({x: x, y: y});
 			}
 		}
+		let rand = randNum(0, option.space.length - 1);
+		
+		this.config.cop.x = option.space[rand].x;
+		this.config.cop.y = option.space[rand].y;
+		
 	}
 
 	dealer(x, y){
@@ -55,6 +81,7 @@ class Game{
 		}
 		this.config.dealers.push({x: x, y: y, stock: this.config.startingStock});
 	}
+
 	fetchDealer(x, y){
 		let minX = x - 1, maxX = x + 1, minY = y - 1, maxY = y + 1;
 		for (let i in this.config.dealers){
@@ -149,8 +176,7 @@ class Game{
 
 		}
 
-		for (let runnerID in game.config.runners){
-			console.log(game.config.runners[runnerID]);
+		for (let runnerID in game.config.runners){			
 			game.runnerMoves(runnerID);
 		}
 		game.copWander();
@@ -197,7 +223,7 @@ class Game{
 			&& this.config.runners[runnerID].y == dealer.y){
 			this.config.dealers[runner.dealerID].stock = this.config.startingStock;
 			this.config.runners.splice(runnerID, 1);
-			console.log(this.config.dealers[runner.dealerID].stock);
+
 		}
 	}
 
@@ -215,7 +241,7 @@ class Game{
 			
 			if (randX >= 0 && randX < this.config.maxX 
 				&& randY >= 0 && randY < this.config.maxY
-				&& this.config.board[randX][randY] < 6
+				&& this.config.board[randX][randY] <= this.config.maxAddicts
 				&& this.config.board[addict.x][addict.y] >= this.config.board[randX][randY]){
 				this.move(addictID, randX, randY);
 				return;

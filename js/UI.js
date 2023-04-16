@@ -5,10 +5,11 @@ class UI{
 
 	}
 	refresh(){
-		console.log('refresh');
+		//console.log('refresh');
 		this.printBoard();
 		this.printDealers();
 		$("#money").html("$" + game.config.money.toLocaleString());
+		$("#product").html(game.config.product.toLocaleString());
 	}
 
 	printBoard(){
@@ -17,6 +18,10 @@ class UI{
 			txt += "<div class='horizontal'>";
 			for (let x = 0; x < game.config.maxX; x++){
 				let boxClass = '';
+				let who = game.whoIsHere(x, y);
+				if (who < 1){
+					console.log(who);
+				}
 				if (game.config.cop.x == x && game.config.cop.y == y){
 					boxClass = ' cop ';
 				} else if (x == 0 && y == 0){
@@ -25,6 +30,8 @@ class UI{
 					boxClass = ' dealer ';
 				} else if (game.isThereARunnerHere(x, y)){
 					boxClass = ' runner ';
+				} else if (who == 0 || game.config.board[x][y] == 0){
+					boxClass = ' sober ';
 				}
 				txt += "<span id='box-" + x + "-" + y + "' class='box " 
 					+ boxClass + "'>" + game.config.board[x][y] + "</span>";

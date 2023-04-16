@@ -10,13 +10,15 @@ class Config {
     addictionTimer = 10;
     justcoppedtimer = 2;
     addicts = [];
+    product = 100;
+    maxAddicts = 8;
     runners = [];
-    startingStock = 10;
+    startingStock = 40;
     constructor(){
         for (let x = 0; x < this.maxX; x++){
             this.board.push([]);
             for (let y = 0; y< this.maxY; y++){
-                let rand = randNum(0, 2);
+                let rand = randNum(1, 2);
                 this.board[x][y] = rand;
                 for (let i = 0 ; i < rand; i ++){
                     this.addicts.push(this.createAddict(x, y));
