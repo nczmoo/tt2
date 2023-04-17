@@ -12,7 +12,7 @@ class Config {
     dealers = [];
     maxX = 10;
     maxY = 10;
-    money = 10000;
+    money = 0;
     sale = 10;
     gameLoopInterval = null; 
     addictionTimer = 10;
@@ -44,8 +44,8 @@ class Config {
                 }
             }    
         }
-        this.cop.x = this.maxX - 1;
-        this.cop.y = this.maxY - 1;
+        this.cop.x = 10 - this.traphouse.x;
+        this.cop.y = 10 - this.traphouse. y;
     }
 
     createAddict(x, y){

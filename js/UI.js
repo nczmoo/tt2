@@ -12,8 +12,14 @@ class UI{
 		$("#dealers").html(game.config.staff.dealers);
 		$("#runners").html(game.config.staff.runners);
 		for (let i in game.config.costs){
+			
 			let quantity = game.config.costs[i];
 			$("#costs-" + i).html("-$" + quantity.toLocaleString());
+
+			$("#buy-" + i).prop('disabled', false);
+			if (game.config.money < quantity){
+				$("#buy-" + i).prop('disabled', true);
+			}
 		}
 		$("#capacity-runner").html(game.config.runnerCapacity.toLocaleString());
 		$("#capacity-dealer").html(game.config.dealerCapacity.toLocaleString());
@@ -52,6 +58,7 @@ class UI{
 			let dealer = game.config.dealers[i];
 			txt += "<div class=''>(" + dealer.x + ", " + dealer.y + ") - " + dealer.product;			
 		}
-		$("#dealers").html(txt);
+		$("#dealerListing").html(txt);
+		console.log(txt);
 	}
 }

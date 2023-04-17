@@ -245,8 +245,10 @@ class Game{
 	runnerMoves(runnerID){
 		let runner = this.config.runners[runnerID];
 		let dealer = this.config.dealers[runner.dealerID];
+		console.log(dealer, runner);
 		if (dealer == undefined){
 			this.config.runners.splice(runnerID, 1);
+			return;
 		}
 		let xD = dealer.x - runner.x;
 		let yD = dealer.y - runner.y;
