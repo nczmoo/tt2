@@ -3,7 +3,21 @@ class Game{
 	constructor(){
 		this.config.gameLoopInterval =  setInterval(this.looping, 1000);
 	}
-	
+
+	arrest(){
+		let dealerID = this.fetchDealer(this.config.cop.x, this.config.cop.y);
+		if (dealerID == null){
+			console.log('arrest null');
+			return;
+		}
+		let dealer = this.config.dealers[dealerID];
+		if (dealer.product < 1){
+			console.log('nothing on them!');
+			return;
+		}
+		this.config.dealers.splice(dealerID, 1);
+	}
+
 	whoIsHere(x, y){
 		let n = 0; 
 		let addicted = 0;
@@ -31,14 +45,14 @@ class Game{
 		}
 		if (this.config.addicts[addictID].justCopped != null 
 			|| this.config.addicts[addictID].addiction != 0 
-			||  dealer.stock < 1){
+			||  dealer.product < 1){
 			return;
 		}
 		this.config.addicts[addictID].justCopped = this.config.justcoppedtimer;
 		this.config.addicts[addictID].addiction = this.config.addictionTimer;
 		this.config.money += this.config.sale;
-		this.config.dealers[dealerID].stock--;
-		if (this.config.dealers[dealerID].stock < 1){			
+		this.config.dealers[dealerID].product--;
+		if (this.config.dealers[dealerID].product < 1 && this.config.product > 0){			
 			this.sendRunner(dealerID);
 		}
 	}
@@ -71,15 +85,22 @@ class Game{
 	}
 
 	dealer(x, y){
+		
 		if (game.isThereADealerHere(x, y)){
 			for (let i in this.config.dealers){
 				if (this.config.dealers[i].x == x && this.config.dealers[i].y == y){
 					this.config.dealers.splice(i, 1);
+					this.config.staff.dealers ++;
 					return;
 				}
 			}
 		}
-		this.config.dealers.push({x: x, y: y, stock: this.config.startingStock});
+		if (this.config.staff.dealers < 1){
+			return;
+		}
+		this.config.staff.dealers --;
+		this.config.dealers.push({x: x, y: y, product: 0});
+		this.sendRunner(this.config.dealers.length - 1);
 	}
 
 	fetchDealer(x, y){
@@ -122,7 +143,7 @@ class Game{
 
 			if (dealer.x >= minX && dealer.x <= maxX 
 				&& dealer.y >= minY && dealer.y <= maxY 
-				&& this.config.dealers[i].stock > 0){
+				&& this.config.dealers[i].product > 0){
 				return i;
 			}
 		}
@@ -180,6 +201,9 @@ class Game{
 			game.runnerMoves(runnerID);
 		}
 		game.copWander();
+		if (game.isDealerNearby(game.config.cop.x, game.config.cop.y)){
+			game.arrest();
+		}
 		ui.refresh();
 	}
 
@@ -204,6 +228,9 @@ class Game{
 	runnerMoves(runnerID){
 		let runner = this.config.runners[runnerID];
 		let dealer = this.config.dealers[runner.dealerID];
+		if (dealer == undefined){
+			this.config.runners.splice(runnerID, 1);
+		}
 		let xD = dealer.x - runner.x;
 		let yD = dealer.y - runner.y;
 		let xDelta = 0, yDelta = 0;
@@ -221,14 +248,19 @@ class Game{
 		this.config.runners[runnerID].y = runner.y + yDelta;
 		if (this.config.runners[runnerID].x == dealer.x 
 			&& this.config.runners[runnerID].y == dealer.y){
-			this.config.dealers[runner.dealerID].stock = this.config.startingStock;
+			this.config.dealers[runner.dealerID].product = runner.product;
 			this.config.runners.splice(runnerID, 1);
 
 		}
 	}
 
 	sendRunner(dealerID){
-		this.config.runners.push({dealerID: Number(dealerID), x: 0, y: 0});
+		let holding = this.config.runnerCapacity;
+		if (this.config.product < this.config.runnerCapacity){
+			holding = this.config.product;			
+		}
+		this.config.product -= holding;
+		this.config.runners.push({dealerID: Number(dealerID), x: 5, y: 5, product: holding});
 	}
 
 	wander(addictID){

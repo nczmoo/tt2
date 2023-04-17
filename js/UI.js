@@ -10,6 +10,8 @@ class UI{
 		this.printDealers();
 		$("#money").html("$" + game.config.money.toLocaleString());
 		$("#product").html(game.config.product.toLocaleString());
+		$("#dealers").html(game.config.staff.dealers);
+		$("#runners").html(game.config.staff.runners);
 	}
 
 	printBoard(){
@@ -19,12 +21,10 @@ class UI{
 			for (let x = 0; x < game.config.maxX; x++){
 				let boxClass = '';
 				let who = game.whoIsHere(x, y);
-				if (who < 1){
-					console.log(who);
-				}
+
 				if (game.config.cop.x == x && game.config.cop.y == y){
 					boxClass = ' cop ';
-				} else if (x == 0 && y == 0){
+				} else if (x == 5 && y == 5){
 					boxClass = ' traphouse ';
 				} else if (game.isThereADealerHere(x, y)){
 					boxClass = ' dealer ';
@@ -45,7 +45,7 @@ class UI{
 		let txt = '';
 		for (let i in game.config.dealers){
 			let dealer = game.config.dealers[i];
-			txt += "<div class=''>(" + dealer.x + ", " + dealer.y + ") - " + dealer.stock;			
+			txt += "<div class=''>(" + dealer.x + ", " + dealer.y + ") - " + dealer.product;			
 		}
 		$("#dealers").html(txt);
 	}

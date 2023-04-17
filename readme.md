@@ -8,7 +8,7 @@ TODO
     x Have cop wander. (should they follow satiated fiends?)
     x Have fiends migrate to buy drugs. Each space away is a lower chance they'll migrate. Satiated fiends wander aimlessly.
     x instead of wandering completely randomly, police go to highest addict space or random if all equal
-    if next to a dealer with product, they will arrest them
+    x if next to a dealer with product, they will arrest them
     move traphouse to center
     dealer can be upgraded
     buy more dealers
@@ -24,3 +24,6 @@ DESIGN
     
     Nothing to really mitigate the cop other tahn moving it
 
+MAYBE
+    have varying prices on the space
+    

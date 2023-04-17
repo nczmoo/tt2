@@ -13,7 +13,14 @@ class Config {
     product = 100;
     maxAddicts = 8;
     runners = [];
+
+    runnerCapacity = 10;
+    dealerCapacity = 10;
     startingStock = 40;
+    staff = {
+        dealers: 1,
+        runners: 1,
+    }
     constructor(){
         for (let x = 0; x < this.maxX; x++){
             this.board.push([]);
