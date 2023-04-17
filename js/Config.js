@@ -1,16 +1,24 @@
 class Config {
-	board = [];
+	board = [];    
     cop = {x: null, y: null};
+    costs = {
+        dealer: 100,
+        dealerUpgrade: 100,
+        product: 1000,
+        runner: 100,
+        runnerUpgrade: 100,
+        
+    };
     dealers = [];
     maxX = 10;
     maxY = 10;
-    money = 0;
+    money = 10000;
     sale = 10;
     gameLoopInterval = null; 
     addictionTimer = 10;
     justcoppedtimer = 2;
     addicts = [];
-    product = 100;
+    product = 1000;
     maxAddicts = 8;
     runners = [];
 
@@ -21,7 +29,11 @@ class Config {
         dealers: 1,
         runners: 1,
     }
+    traphouse = {x: null, y: null};
     constructor(){
+        this.traphouse.x = randNum(0, this.maxX - 1);
+        this.traphouse.y = randNum(0, this.maxY - 1);
+        
         for (let x = 0; x < this.maxX; x++){
             this.board.push([]);
             for (let y = 0; y< this.maxY; y++){

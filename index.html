@@ -42,10 +42,33 @@
 	<div class="row">
 		<div class="col text-center">
 			Product: <span id='product'></span>
+			<button id="buy-product" class="buy btn btn-link">[ +1,000 ]</button>
+			(<span id ='costs-product' class="text-danger">$100</span>)
 		</div><div class="col text-center">
-			Dealers: <span id="dealers"></span>
+			<div>
+				Dealers: <span id="dealers"></span>
+				<button id="buy-dealer" class="buy btn btn-link">[ +1 ]</button>
+				(<span id ='costs-dealer' class="text-danger">$100</span>)
+			</div><div>
+				Capacity: 
+				<span id="capacity-dealer"></span>
+				<button id="buy-dealerUpgrade" class="buy btn btn-link">[ +10 ]</button>
+
+				(<span id ='costs-dealerUpgrade' class="text-danger">$100</span>)
+			</div>
+			
 		</div><div class="col text-center">
-			Runners: <span id="runners"></span>
+			<div>
+				Runners: <span id="runners"></span>
+				<button id="buy-runner" class="buy btn btn-link">[ +1 ]</button>
+				(<span id ='costs-runners' class="text-danger">$100</span>)
+			</div><div>
+				Capacity: 
+				<span id="capacity-runner"></span>
+				<button id="buy-runnerUpgrade" class="buy btn btn-link">[ +10 ]</button>
+				(<span id ='costs-runnerUpgrade' class="text-danger">$100</span>)
+			</div>
+
 		</div>
 
 	</div>

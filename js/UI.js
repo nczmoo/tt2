@@ -4,14 +4,19 @@ class UI{
 	constructor(){
 
 	}
-	refresh(){
-		//console.log('refresh');
+	refresh(){		
 		this.printBoard();
 		this.printDealers();
 		$("#money").html("$" + game.config.money.toLocaleString());
 		$("#product").html(game.config.product.toLocaleString());
 		$("#dealers").html(game.config.staff.dealers);
 		$("#runners").html(game.config.staff.runners);
+		for (let i in game.config.costs){
+			let quantity = game.config.costs[i];
+			$("#costs-" + i).html("-$" + quantity.toLocaleString());
+		}
+		$("#capacity-runner").html(game.config.runnerCapacity.toLocaleString());
+		$("#capacity-dealer").html(game.config.dealerCapacity.toLocaleString());
 	}
 
 	printBoard(){
@@ -20,11 +25,11 @@ class UI{
 			txt += "<div class='horizontal'>";
 			for (let x = 0; x < game.config.maxX; x++){
 				let boxClass = '';
-				let who = game.whoIsHere(x, y);
-
+				let who = game.whoIsHere(x, y);				
 				if (game.config.cop.x == x && game.config.cop.y == y){
 					boxClass = ' cop ';
-				} else if (x == 5 && y == 5){
+				} else if (x == game.config.traphouse.x 
+					&& y == game.config.traphouse.y){
 					boxClass = ' traphouse ';
 				} else if (game.isThereADealerHere(x, y)){
 					boxClass = ' dealer ';

@@ -18,6 +18,23 @@ class Game{
 		this.config.dealers.splice(dealerID, 1);
 	}
 
+	buy(id){
+		if (this.config.money < this.config.costs[id]){
+			return;
+		}
+		this.config.money -= this.config.costs[id];
+		if (id == 'product'){
+			this.config.product += 1000;
+			return;
+		}
+		if (id.substring(id.length - ('Upgrade').length) == 'Upgrade'){
+			this.config[id.substring(0, id.length - ('Upgrade').length) + "Capacity"] += 10;
+			return;
+		}
+		//console.log(id + 's', this.config[id + 's'])
+		this.config.staff[id + 's'] ++;
+	}
+
 	whoIsHere(x, y){
 		let n = 0; 
 		let addicted = 0;
@@ -260,7 +277,7 @@ class Game{
 			holding = this.config.product;			
 		}
 		this.config.product -= holding;
-		this.config.runners.push({dealerID: Number(dealerID), x: 5, y: 5, product: holding});
+		this.config.runners.push({dealerID: Number(dealerID), x: this.config.traphouse.x, y: this.config.traphouse.y, product: holding});
 	}
 
 	wander(addictID){

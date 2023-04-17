@@ -9,11 +9,14 @@ TODO
     x Have fiends migrate to buy drugs. Each space away is a lower chance they'll migrate. Satiated fiends wander aimlessly.
     x instead of wandering completely randomly, police go to highest addict space or random if all equal
     x if next to a dealer with product, they will arrest them
-    move traphouse to center
-    dealer can be upgraded
-    buy more dealers
-    upgrade runner
-    buy more runners
+    x move traphouse to center
+    x dealer can be upgraded
+    x buy more dealers
+    x upgrade runner
+    x buy more runners
+    prevent people from placing a dealer within x spaces of traphouse
+    before a dealer is deleted, go get the product
+    if a cop lands on a runner, chance to get arrested
 
 
 
