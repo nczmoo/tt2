@@ -59,6 +59,5 @@ class UI{
 			txt += "<div class=''>(" + dealer.x + ", " + dealer.y + ") - " + dealer.product;			
 		}
 		$("#dealerListing").html(txt);
-		console.log(txt);
 	}
 }

@@ -35,22 +35,7 @@ class Game{
 		this.config.staff[id + 's'] ++;
 	}
 
-	whoIsHere(x, y){
-		let n = 0; 
-		let addicted = 0;
-		for (let i in this.config.addicts){
-			let addict = this.config.addicts[i];
-			if (addict.x != x && addict.y != y){
-				continue;
-			}
-			n ++;
-			if (addict.addiction == 0){
-				addicted ++;
-			}
-		}
 
-		return addicted / n;
-	}
 
 	buyDrugs(addictID){
 		let dealerID 
@@ -70,6 +55,12 @@ class Game{
 		this.config.money += this.config.sale;
 		this.config.dealers[dealerID].product--;
 		if (this.config.dealers[dealerID].product < 1 && this.config.product > 0){			
+			if (this.config.dealers[dealerID].deleting){
+				this.config.dealers.splice(dealerID, 1);
+				this.config.staff.dealers ++;
+				return;
+			}
+			
 			this.sendRunner(dealerID);
 		}
 	}
@@ -104,19 +95,16 @@ class Game{
 	dealer(x, y){
 		
 		if (game.isThereADealerHere(x, y)){
-			for (let i in this.config.dealers){
-				if (this.config.dealers[i].x == x && this.config.dealers[i].y == y){
-					this.config.dealers.splice(i, 1);
-					this.config.staff.dealers ++;
-					return;
-				}
-			}
+			let dealerID = this.fetchDealer(x, y);
+			this.config.dealers[dealerID].deleting = true;						
+			return;
+			
 		}
 		if (this.config.staff.dealers < 1){
 			return;
 		}
 		this.config.staff.dealers --;
-		this.config.dealers.push({x: x, y: y, product: 0});
+		this.config.dealers.push({x: x, y: y, product: 0, deleting: false});
 		this.sendRunner(this.config.dealers.length - 1);
 	}
 
@@ -221,6 +209,9 @@ class Game{
 		if (game.isDealerNearby(game.config.cop.x, game.config.cop.y)){
 			game.arrest();
 		}
+		if (game.isThereARunnerHere(game.config.cop.x, game.config.cop.y)){
+			
+		}
 		ui.refresh();
 	}
 
@@ -299,5 +290,22 @@ class Game{
 			}
 		}
 	}
+
 	
+	whoIsHere(x, y){
+		let n = 0; 
+		let addicted = 0;
+		for (let i in this.config.addicts){
+			let addict = this.config.addicts[i];
+			if (addict.x != x && addict.y != y){
+				continue;
+			}
+			n ++;
+			if (addict.addiction == 0){
+				addicted ++;
+			}
+		}
+
+		return addicted / n;
+	}
 }
