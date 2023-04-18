@@ -37,6 +37,7 @@ class Game{
 			return;
 		}
 		this.config.money -= this.config.costs[id];
+		this.config.costs[id] *= 2;
 		if (id == 'product'){
 			this.config.product += 1000;
 			return;
@@ -64,6 +65,7 @@ class Game{
 			||  dealer.product < 1){
 			return;
 		}
+		this.heatItUp(addict.x, addict.y);
 		this.config.addicts[addictID].justCopped = this.config.justcoppedtimer;
 		this.config.addicts[addictID].addiction = this.config.addictionTimer;
 		this.config.money += this.config.prices[dealer.x][dealer.y];
@@ -85,9 +87,44 @@ class Game{
 		}
 	}
 
+	coolDown(){
+		let randX = randNum(0, this.config.maxX - 1);
+		let randY = randNum(0, this.config.maxY - 1);
+		if (this.config.heat[randX][randY] > 0){
+			this.config.heat[randX][randY] --;
+		}
+	}
+
 	copWander(){
 		let delta = [-1, 0, 1];
-
+		let newX = null, newY = null;
+		this.config.cop.moveIn -- ;
+		if (this.config.cop.moveIn > 0){
+			return;
+			
+		}
+		this.config.cop.moveIn = this.config.copMovesEvery;
+		this.config.cop.turnIn -- ;
+		while (1){
+			newX = this.config.cop.x + this.config.deltaX[this.config.cop.direction];
+			newY = this.config.cop.y + this.config.deltaY[this.config.cop.direction];
+			if (this.config.cop.turnIn == 0 || newX < 0 || newX > this.config.maxX - 1
+				|| newY < 0 || newY > this.config.maxY - 1){
+				let dir = this.config.directions.indexOf(this.config.cop.direction);
+				dir ++;
+				if (dir > this.config.directions.length - 1){
+					dir = 0;
+				}
+				this.config.cop.direction = this.config.directions[dir];
+				this.config.cop.turnIn = randNum(0, 10);
+				continue;
+			}
+			break;
+		}
+		
+		
+		this.config.cop.x = newX; 
+		this.config.cop.y = newY;
 		/*
 		let minX = this.config.cop.x - 1, maxX = this.config.cop.x + 1;
 		let minY = this.config.cop.y - 1, maxY = this.config.cop.y + 1;
@@ -112,7 +149,7 @@ class Game{
 		this.config.cop.x = option.space[rand].x;
 		this.config.cop.y = option.space[rand].y;
 		*/
-
+/*
 		while(1){
 			let randX = this.config.cop.x + delta[randNum(0, delta.length - 1)];
 			let randY = this.config.cop.y + delta[randNum(0, delta.length - 1)];
@@ -125,6 +162,7 @@ class Game{
 			this.config.cop.y = randY;
 			return;
 		}
+		*/
 	}
 
 	dealer(x, y){
@@ -177,6 +215,35 @@ class Game{
 			}
 		}
 		return null;
+	}
+
+	heatItUp(x, y){
+		let delta = [-1, 0, 1];
+		let n = 0;
+		let rand = randNum(1, 10);
+		this.coolDown();
+		if (rand != 1){
+			return;
+		}
+		console.log('fire');
+		if (this.config.heat[x][y] < 3){
+			this.config.heat[x][y]++;
+			return;
+		}		
+		while(1){
+			let newX = x + delta[randNum(0, delta.length - 1)];
+			let newY = y + delta[randNum(0, delta.length - 1)];
+			if (n > 100){
+				break;
+			}
+			if (newX < 0 || newX > this.config.maxX - 1 				
+				|| newY < 0 || newY > this.config.maxY - 1
+				|| this.config.heat[newX][newY] >= 3){
+				n++;
+				continue;
+			}
+			this.config.heat[newX][newY] ++;
+		}
 	}
 
 	increasePrice(){
@@ -349,7 +416,6 @@ class Game{
 	}
 
 	sendRunner(dealerID){
-		console.log(dealerID);
 		if (this.config.staff.runners < 1){
 			if (!this.config.runnerQueue.includes(dealerID)){
 				this.config.runnerQueue.push(dealerID);

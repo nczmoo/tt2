@@ -26,14 +26,17 @@ class UI{
 	}
 
 	printBoard(){
+		let arrows = {up: '&uarr;', right: '&rarr;', down: '&darr;', left: '&larr;'};
 		let txt = "";
 		for (let y = 0; y < game.config.maxY; y++){
 			txt += "<div class='horizontal'>";
 			for (let x = 0; x < game.config.maxX; x++){
 				let boxClass = '';
+				let caption = game.config.prices[x][y];
 				let who = game.whoIsHere(x, y);				
 				if (game.config.cop.x == x && game.config.cop.y == y){
 					boxClass = ' cop ';
+					caption = game.config.cop.turnIn;					
 				} else if (x == game.config.traphouse.x 
 					&& y == game.config.traphouse.y){
 					boxClass = ' traphouse ';
@@ -41,15 +44,21 @@ class UI{
 					boxClass = ' dealer ';
 				} else if (game.isThereARunnerHere(x, y)){
 					boxClass = ' runner ';
+				} else if (game.config.heat[x][y] > 0){
+					boxClass = " heat-" + game.config.heat[x][y] + " ";
 				} else if (game.config.board[x][y] == 0){
 					boxClass = ' empty ';
-				} else if (who < .25){
+				} /* else if (who < .25){
 					boxClass = ' sober ';
 				} else if (who > .75){
 					boxClass = ' addicted ';
 				}
+				*/
+				if (boxClass == ' cop ' && game.config.cop.moveIn % 2 == 0){
+					caption = arrows[game.config.cop.direction];
+				}
 				txt += "<span id='box-" + x + "-" + y + "' class='box " 
-					+ boxClass + "'>" + game.config.prices[x][y] + "</span>";
+					+ boxClass + "'>" + caption + "</span>";
 			}
 			txt += "</div>";
 		}

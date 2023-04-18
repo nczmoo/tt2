@@ -16,7 +16,12 @@ TODO
     x buy more runners
     x before a dealer is deleted, go get the product (instead wait until product is sold out)
     x if a cop lands on a runner, chance to get arrested
-    x prevent people from placing a dealer within x spaces of traphouse
+    x prevent people from placing a dealer within x spaces of traphouse    
+    x cop goes in a random direction (orthogonal) and only moves ever <x> seconds
+    x when cop hits boundary, they turn clock wise.
+    x PROBLEM: cop just goes along the edge now.
+    heat is distributed around drug dealing areas and cops will follow heat
+    price of brick should change 
 
     
 
