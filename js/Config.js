@@ -18,12 +18,15 @@ class Config {
     addictionTimer = 10;
     justcoppedtimer = 2;
     addicts = [];
+    prices = [];
     product = 1000;
     maxAddicts = 8;
     runners = [];
 
     runnerCapacity = 10;
     dealerCapacity = 10;
+
+    runnerQueue = [];
     startingStock = 40;
     staff = {
         dealers: 1,
@@ -36,7 +39,14 @@ class Config {
         
         for (let x = 0; x < this.maxX; x++){
             this.board.push([]);
+            this.prices.push([]);
+            
             for (let y = 0; y< this.maxY; y++){
+                let cost = 0;
+                if (distance(this.traphouse.x, x, this.traphouse.y, y) > 2){
+                    cost = randNum(1, this.sale * 2);
+                }
+                this.prices[x][y] = cost;
                 let rand = randNum(1, 2);
                 this.board[x][y] = rand;
                 for (let i = 0 ; i < rand; i ++){

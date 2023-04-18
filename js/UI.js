@@ -41,11 +41,15 @@ class UI{
 					boxClass = ' dealer ';
 				} else if (game.isThereARunnerHere(x, y)){
 					boxClass = ' runner ';
-				} else if (who == 0 || game.config.board[x][y] == 0){
+				} else if (game.config.board[x][y] == 0){
+					boxClass = ' empty ';
+				} else if (who < .25){
 					boxClass = ' sober ';
+				} else if (who > .75){
+					boxClass = ' addicted ';
 				}
 				txt += "<span id='box-" + x + "-" + y + "' class='box " 
-					+ boxClass + "'>" + game.config.board[x][y] + "</span>";
+					+ boxClass + "'>" + game.config.prices[x][y] + "</span>";
 			}
 			txt += "</div>";
 		}

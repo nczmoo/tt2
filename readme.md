@@ -15,8 +15,8 @@ TODO
     x upgrade runner
     x buy more runners
     x before a dealer is deleted, go get the product (instead wait until product is sold out)
-    if a cop lands on a runner, chance to get arrested
-    prevent people from placing a dealer within x spaces of traphouse
+    x if a cop lands on a runner, chance to get arrested
+    x prevent people from placing a dealer within x spaces of traphouse
 
     
 
